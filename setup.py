@@ -54,6 +54,9 @@ def setup_target(target, dotfiles):
 
 
 def setup_targets(targets, dotfiles):
+    if not dotfiles:
+        dotfiles = TARGETS.keys()
+
     for target in targets:
         setup_target(target, dotfiles)
 
