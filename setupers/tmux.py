@@ -1,6 +1,6 @@
-import setuper
+from .setuper import Setuper
 
 
-class TmuxSetuper(setuper.Setuper):
+class TmuxSetuper(Setuper):
     def __init__(self):
-        super(sources=['.tmux.conf'])
+        super().__init__(sources=['.tmux.conf'])

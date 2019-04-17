@@ -2,13 +2,16 @@
 import argparse
 import logging
 import os
-import setupers
+
+import sys
+sys.path.append('.')
+from setupers import vim, zsh, tmux, git
 
 TARGETS = {
-    'vim':  setupers.vim.VimSetuper(),
-    'zsh':  setupers.zsh.ZshSetuper(),
-    'tmux': setupers.tmux.TmuxSetuper(),
-    'git':  setupers.git.GitSetuper(),
+    'vim':  vim.VimSetuper(),
+    'zsh':  zsh.ZshSetuper(),
+    'tmux': tmux.TmuxSetuper(),
+    'git':  git.GitSetuper(),
 }
 
 
@@ -49,7 +52,7 @@ def setup_target(target, dotfiles):
         logger.info('Skipping {}'.format(target))
         return
 
-    logger.info('Setting up {}'.forma(target))
+    logger.info('Setting up {}'.format(target))
     TARGETS[target].setup(dotfiles)
 
 
@@ -65,4 +68,4 @@ if __name__ == '__main__':
     args = parse_args()
     dotfiles = './dotfiles'
     get_dotfiles(args.repo, dotfiles)
-    setup_targets(dotfiles)
+    setup_targets(args.targets, dotfiles)

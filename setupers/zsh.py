@@ -1,6 +1,6 @@
-import setuper
+from .setuper import Setuper
 
 
-class ZshSetuper(setuper.Setuper):
+class ZshSetuper(Setuper):
     def __init__(self):
-        super(sources=['.zshrc'])
+        super().__init__(sources=['.zshrc'])

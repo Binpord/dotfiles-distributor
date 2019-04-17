@@ -1,6 +1,6 @@
-import setuper
+from .setuper import Setuper
 
 
-class GitSetuper(setuper.Setuper):
+class GitSetuper(Setuper):
     def __init__(self):
-        super(sources=['.gitconfig'])
+        super().__init__(sources=['.gitconfig'])

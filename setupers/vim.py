@@ -1,8 +1,8 @@
-import setuper
+from .setuper import Setuper
 
 
-class VimSetuper(setuper.Setuper):
+class VimSetuper(Setuper):
     def __init__(self):
-        super(sources=[
+        super().__init__(sources=[
             '.vimrc', '.config/nvim/init.vim', '.vim/ycm_extra_conf.py'
         ])
