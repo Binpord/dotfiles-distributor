@@ -27,6 +27,17 @@ def parse_args():
     return ap.parse_args()
 
 
+def setup_logging():
+    root = logging.getLogger()
+    root.setLevel(logging.DEBUG)
+
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setLevel(logging.DEBUG)
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    root.addHandler(handler)
+
+
 def clone_dotfiles_repo(repo, dotfiles):
     os.system('git clone {} {}'.format(repo, dotfiles))
 
@@ -66,6 +77,7 @@ def setup_targets(targets, dotfiles):
 
 if __name__ == '__main__':
     args = parse_args()
-    dotfiles = './dotfiles'
+    setup_logging()
+    dotfiles = os.path.abspath('./dotfiles')
     get_dotfiles(args.repo, dotfiles)
     setup_targets(args.targets, dotfiles)
