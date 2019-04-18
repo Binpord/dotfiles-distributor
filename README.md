@@ -1,2 +1,2 @@
-# setup
-Python script, which will load my config files from repo and set them up.
+# Dotfiles Distributor
+Python script, which loads my config files from github repo and sets them into appropriate locaitions.
