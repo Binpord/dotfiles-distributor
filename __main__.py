@@ -21,29 +21,32 @@ def parse_args():
 def setup_logging():
     root = logging.getLogger()
     root.setLevel(logging.DEBUG)
-
     handler = logging.StreamHandler(sys.stdout)
     handler.setLevel(logging.DEBUG)
     formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
     handler.setFormatter(formatter)
     root.addHandler(handler)
+    root.info('Logging is set')
 
 
 def clone_dotfiles_repo(repo, dotfiles):
+    logger = logging.getLogger()
+    logger.info('Clonning {} to {}'.format(args.repo, dotfiles))
     os.system('git clone {} {}'.format(repo, dotfiles))
 
 
 def pull_dotfiles_repo(dotfiles):
+    logger = logging.getLogger()
+    logger.info('Pulling existing dotfiles')
     os.system('cd {} && git pull && cd -'.format(dotfiles))
 
 
 def get_dotfiles(repo, dotfiles):
     logger = logging.getLogger()
+    logger.info('Getting dotfiles')
     if not os.path.exists(dotfiles):
-        logger.info('Clonning {} to {}'.format(args.repo, dotfiles))
         clone_dotfiles_repo(args.repo, dotfiles)
     else:
-        logger.info('Pulling existing dotfiles')
         pull_dotfiles_repo(dotfiles)
 
 

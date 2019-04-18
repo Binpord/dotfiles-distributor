@@ -4,36 +4,36 @@ import logging
 
 
 class Setuper:
-    def __init__(self, sources, destination=os.getenv('HOME')):
-        self.sources = sources
-        self.destination = destination
+    def __init__(self, srcs, dst=os.getenv('HOME')):
+        self.srcs = srcs
+        self.dst = dst
 
     def setup(self, dotfiles):
-        for source in self.sources:
-            dotfile = os.path.join(dotfiles, source)
-            destination = os.path.join(self.destination, source)
-            self.link_dotfile(dotfile, destination)
+        for src in self.srcs:
+            dotfile = os.path.join(dotfiles, src)
+            dst = os.path.join(self.dst, src)
+            self.link_dotfile(dotfile, dst)
 
-    def link_dotfile(self, dotfile, destination):
+    def link_dotfile(self, dotfile, dst):
         logger = logging.getLogger()
         if not os.path.exists(dotfile):
             logger.critical('Failed to find {} dotfile'.format(dotfile))
             sys.exit(1)
 
-        self.prepare_destination(destination)
-        logger.info('Linking dotfile {} to {}'.format(dotfile, destination))
-        os.link(dotfile, destination)
+        self.prepare_dst(dst)
+        logger.info('Linking dotfile {} to {}'.format(dotfile, dst))
+        os.link(dotfile, dst)
 
-    def prepare_destination(self, destination):
-        os.makedirs(os.path.dirname(destination), exist_ok=True)
-        if os.path.exists(destination):
-            self.replace_destination(destination)
+    def prepare_dst(self, dst):
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        if os.path.exists(dst):
+            self.replace_dst(dst)
 
-    def replace_destination(self, destination):
+    def replace_dst(self, dst):
         logger = logging.getLogger()
         logger.info(
             '{} file already exists. Moving it to {}.pre-setup'.format(
-                destination, destination
+                dst, dst
             )
         )
-        os.replace(destination, '{}.pre-setup'.format(destination))
+        os.replace(dst, '{}.pre-setup'.format(dst))
