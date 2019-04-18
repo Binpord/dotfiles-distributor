@@ -1,6 +1,6 @@
-from .setuper import Setuper
+from .linker_marshall import LinkerMarshall
 
 
-class GitSetuper(Setuper):
+class GitLinker(LinkerMarshall):
     def __init__(self):
         super().__init__(srcs=['.gitconfig'])
