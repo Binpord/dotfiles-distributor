@@ -2,17 +2,8 @@
 import argparse
 import logging
 import os
-
 import sys
-sys.path.append('.')
-from setupers import vim, zsh, tmux, git
-
-TARGETS = {
-    'vim':  vim.VimSetuper(),
-    'zsh':  zsh.ZshSetuper(),
-    'tmux': tmux.TmuxSetuper(),
-    'git':  git.GitSetuper(),
-}
+from setupers import TARGETS
 
 
 def parse_args():

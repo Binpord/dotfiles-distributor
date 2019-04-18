@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 
 
@@ -14,19 +15,25 @@ class Setuper:
             self.link_dotfile(dotfile, destination)
 
     def link_dotfile(self, dotfile, destination):
-        assert os.path.exists(
-            dotfile
-        ), 'File {} should be in dotfiles repo'.format(dotfile)
-
         logger = logging.getLogger()
+        if not os.path.exists(dotfile):
+            logger.critical('Failed to find {} dotfile'.format(dotfile))
+            sys.exit(1)
+
+        self.prepare_destination(destination)
         logger.info('Linking dotfile {} to {}'.format(dotfile, destination))
+        os.link(dotfile, destination)
+
+    def prepare_destination(self, destination):
         os.makedirs(os.path.dirname(destination), exist_ok=True)
         if os.path.exists(destination):
-            logger.info(
-                '{} file already exists; renaming it to {}.pre-setup'.format(
-                    destination, destination
-                )
-            )
-            os.rename(destination, '{}.pre-setup'.format(destination))
+            self.replace_destination(destination)
 
-        os.link(dotfile, destination)
+    def replace_destination(self, destination):
+        logger = logging.getLogger()
+        logger.info(
+            '{} file already exists. Moving it to {}.pre-setup'.format(
+                destination, destination
+            )
+        )
+        os.replace(destination, '{}.pre-setup'.format(destination))
