@@ -8,7 +8,7 @@ class Setuper:
         self.srcs = srcs
         self.dst = dst
 
-    def setup(self, dotfiles):
+    def run(self, dotfiles):
         for src in self.srcs:
             dotfile = os.path.join(dotfiles, src)
             dst = os.path.join(self.dst, src)
