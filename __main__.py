@@ -3,7 +3,7 @@ import argparse
 import logging
 import os
 import sys
-from setupers import TARGETS
+from targets import targets
 
 
 def parse_args():
@@ -14,7 +14,7 @@ def parse_args():
         default='https://github.com/Binpord/dotfiles.git',
         help='Repository with dotfiles')
     ap.add_argument('targets', metavar='T', type=str,
-                    nargs='*', help='Targets to setup')
+                    nargs='+', help='Targets to setup')
     return ap.parse_args()
 
 
@@ -52,19 +52,16 @@ def get_dotfiles(repo, dotfiles):
 
 def setup_target(target, dotfiles):
     logger = logging.getLogger()
-    if target not in TARGETS:
+    if target not in targets:
         logger.warn('{} is not an available target'.format(target))
         logger.info('Skipping {}'.format(target))
         return
 
     logger.info('Setting up {}'.format(target))
-    TARGETS[target].setup(dotfiles)
+    targets[target].setup(dotfiles)
 
 
 def setup_targets(targets, dotfiles):
-    if not dotfiles:
-        dotfiles = TARGETS.keys()
-
     for target in targets:
         setup_target(target, dotfiles)
 

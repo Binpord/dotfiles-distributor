@@ -1,6 +1,6 @@
 from . import vim, tmux, git, zsh
 
-TARGETS = {
+targets = {
     'vim':  vim.VimSetuper(),
     'zsh':  zsh.ZshSetuper(),
     'tmux': tmux.TmuxSetuper(),
