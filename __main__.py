@@ -3,7 +3,6 @@ import argparse
 import logging
 import os
 import sys
-import git
 from targets import TARGETS
 
 
@@ -54,12 +53,12 @@ class App:
             self.pull_dotfiles_repo()
 
     def clone_dotfiles_repo(self):
-        self.logger.info('Clonning {} to {}'.format(self.repo, self.dotfiles))
-        git.Repo.clone_from(self.repo, self.dotfiles)
+        self.logger.info(f'Clonning {self.repo} to {self.dotfiles}')
+        os.system(f'git clone {self.repo} {self.dotfiles}')
 
     def pull_dotfiles_repo(self):
         self.logger.info('Pulling existing dotfiles')
-        git.Repo(self.dotfiles).remotes.origin.pull()
+        os.system(f'cd {self.dotfiles} && git pull && cd -')
 
     def run_targets(self):
         for target in self.targets:
@@ -67,10 +66,10 @@ class App:
 
     def run_target(self, target):
         if target not in TARGETS:
-            self.logger.error('{} is not a target, skipping'.format(target))
+            self.logger.error(f'{target} is not a target, skipping')
             return
 
-        self.logger.info('Running {}'.format(target))
+        self.logger.info(f'Running {target}')
         TARGETS[target].run(self.dotfiles)
 
 

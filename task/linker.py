@@ -1,16 +1,31 @@
 import os
 import logging
 import errno
+from . import TaskType
+from .task import Task
+from .performer import Performer
 
 
-class Linker:
-    def __init__(self, tasks):
+class LinkerTask(Task):
+    def __init__(self, src, dst):
+        self.type = TaskType.LINK
+        self.task = (src, dst)
+
+    @Task.task.setter
+    def task(self, value):
+        if len(value) != 2:
+            raise ValueError(f'{value!r} is not a linker task')
+
+        self._task = value
+
+
+class Linker(Performer):
+    def __init__(self):
         self.logger = logging.getLogger(__name__)
-        self.tasks = tasks
 
-    def run(self):
-        for src, dst in self.tasks:
-            self.link(src, dst)
+    def perform(self, task):
+        src, dst = task
+        self.link(src, dst)
 
     def link(self, src, dst):
         self.check_src(src)
