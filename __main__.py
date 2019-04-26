@@ -3,7 +3,7 @@ import argparse
 import logging
 import os
 import sys
-from targets import TARGETS
+from target import targets
 
 
 def parse_args():
@@ -65,12 +65,8 @@ class App:
             self.run_target(target)
 
     def run_target(self, target):
-        if target not in TARGETS:
-            self.logger.error(f'{target} is not a target, skipping')
-            return
-
         self.logger.info(f'Running {target}')
-        TARGETS[target].run(self.dotfiles)
+        targets.run(target, self.dotfiles)
 
 
 if __name__ == '__main__':

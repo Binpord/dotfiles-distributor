@@ -29,10 +29,11 @@ class Marshall(abc.ABCMe, Target, task.marshall.Marshall):
 
     def srcToLinkerTask(self, src):
         return task.linker.LinkerTask(
-            src, os.path.join(self.dstdir, os.path.basename(src)))
+            os.path.join(self.dotfiles, src), os.path.join(self.dstdir, src))
 
     def cmdToBashTask(self, cmd):
         return task.bash.BashTask(cmd)
 
-    def run(self):
+    def run(self, dotfiles):
+        self.dotfiles = dotfiles
         self.perform()
