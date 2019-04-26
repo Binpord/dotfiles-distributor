@@ -3,5 +3,5 @@ import enum
 
 @enum.unique
 class TaskType(enum.Enum):
-    LINK = 'link'
-    BASH = 'bash'
+    LINK = enum.auto()
+    BASH = enum.auto()

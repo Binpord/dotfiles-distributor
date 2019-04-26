@@ -35,22 +35,13 @@ class Marshall(Performer):
         self.performer.perform(task)
 
     def parse_task(self, task):
-        if 'type' not in task or 'task' not in task:
-            raise ValueError(f'{task} is not a valid task')
-
         type, task = task['type'], task['task']
+        type = TaskType[type.upper()]
         if type == TaskType.LINK:
-            src, dst = task.get('src'), task.get('dst')
-            if src is None or dst is None:
-                raise ValueError(f'{task!r} is not a valid linker task')
-
+            src, dst = task['src'], task['dst']
             return LinkerTask(os.path.join(self.dotfiles, src),
                               os.path.expandvars(dst))
         elif type == TaskType.BASH:
-            cmd = task.get('cmd')
-            if cmd is None:
-                raise ValueError(f'{task!r} is not a valid bash task')
-
-            return BashTask(cmd)
+            return BashTask(task['cmd'])
         else:
             raise ValueError(f'{type} is not a task type')
