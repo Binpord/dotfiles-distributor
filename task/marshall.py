@@ -1,16 +1,10 @@
 import os
 import errno
-import enum
+from . import TaskType
 from .task import Task
 from .performer import Performer
 from .linker import LinkerTask, Linker
 from .bash import BashTask, Bash
-
-
-@enum.unique
-class TaskType(enum.Enum):
-    LINK = 'link'
-    BASH = 'bash'
 
 
 class BackendedPerformer(Performer):

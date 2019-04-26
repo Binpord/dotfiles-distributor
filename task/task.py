@@ -2,7 +2,7 @@ from . import TaskType
 import abc
 
 
-class Task(abc.ABCMeta):
+class Task(metaclass=abc.ABCMeta):
     @property
     def type(self):
         return self._type
