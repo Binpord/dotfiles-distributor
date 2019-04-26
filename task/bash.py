@@ -19,4 +19,7 @@ class BashTask(Task):
 
 class Bash(Performer):
     def perform(self, task):
-        os.system(task)
+        if not isinstance(task, BashTask):
+            raise ValueError(f'{task!r} is not a bash task')
+
+        os.system(task.task)

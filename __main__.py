@@ -2,8 +2,9 @@
 import argparse
 import logging
 import os
+import json
 import sys
-from target import targets
+from task.marshall import Marshall
 
 
 def parse_args():
@@ -24,6 +25,7 @@ class App:
         self.targets = args.targets
         self.repo = args.repo
         self.dotfiles = os.path.abspath(args.dotfiles)
+        self.performer = Marshall(self.dotfiles)
 
         self.setup_logging(log_fmt)
         self.logger = logging.getLogger(__name__)
@@ -43,7 +45,8 @@ class App:
 
     def run(self):
         self.get_dotfiles()
-        self.run_targets()
+        self.read_setup()
+        self.setup_targets()
 
     def get_dotfiles(self):
         self.logger.info('Getting dotfiles')
@@ -60,13 +63,21 @@ class App:
         self.logger.info('Pulling existing dotfiles')
         os.system(f'cd {self.dotfiles} && git pull && cd -')
 
-    def run_targets(self):
-        for target in self.targets:
-            self.run_target(target)
+    def read_setup(self):
+        with open(os.path.join(self.dotfiles, 'setup.json')) as setup:
+            self.setup = json.load(setup)
 
-    def run_target(self, target):
-        self.logger.info(f'Running {target}')
-        targets.run(target, self.dotfiles)
+    def setup_targets(self):
+        for target in self.targets:
+            self.setup_target(target)
+
+    def setup_target(self, target):
+        if target not in self.setup:
+            raise ValueError(f'{target} is not an available target')
+
+        self.logger.info(f'Setting up {target}')
+        for task in self.setup[target]:
+            self.performer.perform(task)
 
 
 if __name__ == '__main__':

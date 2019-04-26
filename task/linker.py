@@ -24,7 +24,10 @@ class Linker(Performer):
         self.logger = logging.getLogger(__name__)
 
     def perform(self, task):
-        src, dst = task
+        if not isinstance(task, LinkerTask):
+            raise ValueError(f'{task!r} is not a linker task')
+
+        src, dst = task.task
         self.link(src, dst)
 
     def link(self, src, dst):
