@@ -22,7 +22,7 @@ class Marshall(Performer):
     def __init__(self, dotfiles):
         if not os.path.isdir(dotfiles):
             raise FileNotFoundError(
-                errno.ENOENT, errno.strerror(errno.ENOENT), dotfiles)
+                errno.ENOENT, os.strerror(errno.ENOENT), dotfiles)
 
         self.dotfiles = dotfiles
         self.performer = BackendedPerformer({

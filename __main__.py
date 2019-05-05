@@ -25,7 +25,6 @@ class App:
         self.targets = args.targets
         self.repo = args.repo
         self.dotfiles = os.path.abspath(args.dotfiles)
-        self.performer = Marshall(self.dotfiles)
 
         self.setup_logging(log_fmt)
         self.logger = logging.getLogger(__name__)
@@ -54,6 +53,8 @@ class App:
             self.clone_dotfiles_repo()
         else:
             self.pull_dotfiles_repo()
+            
+        self.performer = Marshall(self.dotfiles)
 
     def clone_dotfiles_repo(self):
         self.logger.info(f'Clonning {self.repo} to {self.dotfiles}')
