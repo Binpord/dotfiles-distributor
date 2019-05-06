@@ -33,6 +33,9 @@ class Marshall(Performer):
 
     def perform(self, task):
         task = self.parse_task(task)
+        if task.type == TaskType.BASH and self.skip_bash:
+            return
+
         self.performer.perform(task)
 
     def parse_task(self, task):
@@ -42,5 +45,7 @@ class Marshall(Performer):
             src, dst = task['src'], task['dst']
             return LinkerTask(os.path.join(self.dotfiles, src),
                               os.path.expandvars(dst))
-        elif type == TaskType.BASH and not self.skip_bash:
+        elif type == TaskType.BASH:
             return BashTask(task['cmd'])
+        else:
+            raise ValueError(f'{type} is not a task type')
