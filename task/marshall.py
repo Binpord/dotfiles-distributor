@@ -44,5 +44,3 @@ class Marshall(Performer):
                               os.path.expandvars(dst))
         elif type == TaskType.BASH and not self.skip_bash:
             return BashTask(task['cmd'])
-        else:
-            raise ValueError(f'{type} is not a task type')
