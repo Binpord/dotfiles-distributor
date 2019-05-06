@@ -19,12 +19,13 @@ class BackendedPerformer(Performer):
 
 
 class Marshall(Performer):
-    def __init__(self, dotfiles):
+    def __init__(self, dotfiles, skip_bash):
         if not os.path.isdir(dotfiles):
             raise FileNotFoundError(
                 errno.ENOENT, os.strerror(errno.ENOENT), dotfiles)
 
         self.dotfiles = dotfiles
+        self.skip_bash = skip_bash
         self.performer = BackendedPerformer({
             TaskType.LINK: Linker(),
             TaskType.BASH: Bash(),
@@ -41,7 +42,7 @@ class Marshall(Performer):
             src, dst = task['src'], task['dst']
             return LinkerTask(os.path.join(self.dotfiles, src),
                               os.path.expandvars(dst))
-        elif type == TaskType.BASH:
+        elif type == TaskType.BASH and not self.skip_bash:
             return BashTask(task['cmd'])
         else:
             raise ValueError(f'{type} is not a task type')

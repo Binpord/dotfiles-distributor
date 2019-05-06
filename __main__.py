@@ -17,6 +17,8 @@ def parse_args():
     ap.add_argument('--dotfiles', type=str,
                     default='./dotfiles',
                     help='Directory to clone/pull repo')
+    ap.add_argument('--skip-bash', action='store_true',
+                    help='Skip bash tasks')
     return ap.parse_args()
 
 
@@ -25,6 +27,7 @@ class App:
         self.targets = args.targets
         self.repo = args.repo
         self.dotfiles = os.path.abspath(args.dotfiles)
+        self.skip_bash = args.skip_bash
 
         self.setup_logging(log_fmt)
         self.logger = logging.getLogger(__name__)
@@ -53,11 +56,11 @@ class App:
             self.clone_dotfiles_repo()
         else:
             self.pull_dotfiles_repo()
-            
-        self.performer = Marshall(self.dotfiles)
+
+        self.performer = Marshall(self.dotfiles, self.skip_bash)
 
     def clone_dotfiles_repo(self):
-        self.logger.info(f'Clonning {self.repo} to {self.dotfiles}')
+        self.logger.info(f'Cloning {self.repo} to {self.dotfiles}')
         os.system(f'git clone {self.repo} {self.dotfiles}')
 
     def pull_dotfiles_repo(self):
